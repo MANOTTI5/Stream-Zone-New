@@ -21,10 +21,10 @@ class MainActivity : Activity() {
     }
 
     private fun setupButton(buttonId: Int, section: String) {
-        findViewById<Button>(buttonId).setOnClickListener {
+        findViewById<Button>(buttonId)?.setOnClickListener {
             Toast.makeText(
                 this,
-                "$section coming soon!",
+                "$section section selected",
                 Toast.LENGTH_SHORT
             ).show()
         }
