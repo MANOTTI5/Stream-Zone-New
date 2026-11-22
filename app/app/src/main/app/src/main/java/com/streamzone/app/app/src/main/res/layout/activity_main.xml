@@ -1,6 +1,4 @@
-XML
 
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,48 +34,42 @@ XML
             android:id="@+id/liveTvButton"
             android:layout_width="match_parent"
             android:layout_height="65dp"
-            android:text="LIVE TV"
-            android:focusable="true" />
+            android:text="LIVE TV" />
 
         <Button
             android:id="@+id/channelsButton"
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:text="24/7 CHANNELS"
-            android:layout_marginTop="12dp"
-            android:focusable="true" />
+            android:layout_marginTop="12dp" />
 
         <Button
             android:id="@+id/moviesButton"
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:text="MOVIES"
-            android:layout_marginTop="12dp"
-            android:focusable="true" />
+            android:layout_marginTop="12dp" />
 
         <Button
             android:id="@+id/seriesButton"
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:text="TV SERIES"
-            android:layout_marginTop="12dp"
-            android:focusable="true" />
+            android:layout_marginTop="12dp" />
 
         <Button
             android:id="@+id/favoritesButton"
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:text="MY FAVORITES"
-            android:layout_marginTop="12dp"
-            android:focusable="true" />
+            android:layout_marginTop="12dp" />
 
         <Button
             android:id="@+id/settingsButton"
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:text="SETTINGS"
-            android:layout_marginTop="12dp"
-            android:focusable="true" />
+            android:layout_marginTop="12dp" />
 
     </LinearLayout>
 </ScrollView>
