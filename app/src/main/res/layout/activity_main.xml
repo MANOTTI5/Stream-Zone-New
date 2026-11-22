@@ -1,26 +1,78 @@
+
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     android:background="#080808"
-    android:padding="24dp">
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="STREAM ZONE"
-        android:textColor="#E50914"
-        android:textSize="32sp"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="24dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Your entertainment. Your way."
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:layout_marginTop="12dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="STREAM ZONE"
+            android:textColor="#E50914"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            android:layout_marginTop="25dp"/>
 
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your entertainment. Your way."
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="30dp"/>
+
+        <Button
+            android:id="@+id/liveTvButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="LIVE TV"
+            android:backgroundTint="#E50914"
+            android:textColor="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/channelsButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="24/7 CHANNELS"
+            android:layout_marginTop="12dp"/>
+
+        <Button
+            android:id="@+id/moviesButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="MOVIES"
+            android:layout_marginTop="12dp"/>
+
+        <Button
+            android:id="@+id/seriesButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="TV SERIES"
+            android:layout_marginTop="12dp"/>
+
+        <Button
+            android:id="@+id/favoritesButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="MY FAVORITES"
+            android:layout_marginTop="12dp"/>
+
+        <Button
+            android:id="@+id/settingsButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="SETTINGS"
+            android:layout_marginTop="12dp"/>
+
+    </LinearLayout>
+</ScrollView>
