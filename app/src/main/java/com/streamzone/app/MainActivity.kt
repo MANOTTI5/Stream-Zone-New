@@ -1,7 +1,7 @@
-
 package com.streamzone.app
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -22,11 +22,15 @@ class MainActivity : Activity() {
 
     private fun setupButton(buttonId: Int, section: String) {
         findViewById<Button>(buttonId)?.setOnClickListener {
-            Toast.makeText(
-                this,
-                "$section section selected",
-                Toast.LENGTH_SHORT
-            ).show()
+            if (section == "Settings") {
+                startActivity(Intent(this, LoginActivity::class.java))
+            } else {
+                Toast.makeText(
+                    this,
+                    "$section section selected",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 }
