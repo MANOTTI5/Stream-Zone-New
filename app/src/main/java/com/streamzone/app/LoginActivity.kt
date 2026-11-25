@@ -1,26 +1,16 @@
-
 package com.streamzone.app
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import org.json.JSONObject
-import java.io.IOException
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.Executors
 
 class LoginActivity : Activity() {
 
-    private val client = OkHttpClient.Builder()
-        .connectTimeout(15, TimeUnit.SECONDS)
-        .readTimeout(20, TimeUnit.SECONDS)
-        .build()
+    private val executor = Executors.newSingleThreadExecutor()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +22,7 @@ class LoginActivity : Activity() {
         val connectButton = findViewById<Button>(R.id.connectButton)
 
         connectButton.setOnClickListener {
-            val server = serverUrl.text.toString().trim().trimEnd('/')
+            val server = serverUrl.text.toString().trim()
             val user = username.text.toString().trim()
             val pass = password.text.toString()
 
@@ -45,95 +35,54 @@ class LoginActivity : Activity() {
                 return@setOnClickListener
             }
 
-            val address = if (
-                server.startsWith("http://") ||
-                server.startsWith("https://")
-            ) server else "https://$server"
-
-            val baseUrl = address.toHttpUrlOrNull()
-
-            if (baseUrl == null) {
-                Toast.makeText(
-                    this,
-                    "Please enter a valid server URL",
-                    Toast.LENGTH_LONG
-                ).show()
-                return@setOnClickListener
-            }
-
-            val apiUrl = baseUrl.newBuilder()
-                .addPathSegment("player_api.php")
-                .addQueryParameter("username", user)
-                .addQueryParameter("password", pass)
-                .build()
-
-            val request = Request.Builder()
-                .url(apiUrl)
-                .get()
-                .build()
-
             connectButton.isEnabled = false
             connectButton.text = "Connecting..."
 
-            client.newCall(request).enqueue(object : Callback {
+            executor.execute {
+                try {
+                    val account = XtreamCredentials(
+                        serverUrl = server,
+                        username = user,
+                        password = pass
+                    )
 
-                override fun onFailure(call: Call, e: IOException) {
+                    val api = XtreamApi(account)
+                    api.authenticate()
+
                     runOnUiThread {
-                        connectButton.isEnabled = true
-                        connectButton.text = "Connect"
+                        StreamSession.startSession(server, user, pass)
 
                         Toast.makeText(
-                            this@LoginActivity,
-                            "Connection failed: ${e.message}",
+                            this,
+                            "Provider connection successful!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        startActivity(
+                            Intent(this, ContentActivity::class.java)
+                        )
+
+                        finish()
+                    }
+
+                } catch (e: Exception) {
+                    runOnUiThread {
+                        connectButton.isEnabled = true
+                        connectButton.text = "CONNECT"
+
+                        Toast.makeText(
+                            this,
+                            e.message ?: "Provider connection failed",
                             Toast.LENGTH_LONG
                         ).show()
                     }
                 }
-
-                override fun onResponse(call: Call, response: okhttp3.Response) {
-                    val result = response.use {
-                        if (!it.isSuccessful) {
-                            "Server error: ${it.code}"
-                        } else {
-                            val body = it.body?.string()
-
-                            try {
-                                val data = JSONObject(body ?: "")
-                                val userInfo = data.optJSONObject("user_info")
-                                val auth = userInfo?.optString("auth", "0")
-
-                                if (auth == "1" || auth == "true") {
-                                    "SUCCESS"
-                                } else {
-                                    "Login rejected. Check your provider details."
-                                }
-                            } catch (e: Exception) {
-                                "Invalid response from provider."
-                            }
-                        }
-                    }
-
-                    runOnUiThread {
-                        connectButton.isEnabled = true
-                        connectButton.text = "Connect"
-
-                        if (result == "SUCCESS") {
-                            Toast.makeText(
-                                this@LoginActivity,
-                                "Provider connection successful!",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        } else {
-                            Toast.makeText(
-                                this@LoginActivity,
-                                result,
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                }
-            })
+            }
         }
     }
-}
 
+    override fun onDestroy() {
+        executor.shutdown()
+        super.onDestroy()
+    }
+}
